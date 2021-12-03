@@ -1,0 +1,67 @@
+type Query {
+  rider(email: String!): Rider @isAuthorized
+}
+
+type Mutation {
+  loginRider(email: String!, password: String!): LoginResult
+
+  createRider(
+    email: String!,
+    name: String!,
+    password: String!,
+    phoneNumber: String!
+  ): Rider
+
+  driverCall( 
+    origin: TripPlaceInput!,
+    destination: TripPlaceInput!,
+    startTime: String!,
+    estimatedTime: String!,
+    estimatedDistance: String!
+  ): CallResult @isAuthorized
+  
+  driverRecall(
+    id:ID!
+  ): CallResult @isAuthorized
+
+  notifyRiderState(tripId: ID!, latitude: Float, longitude: Float): Boolean @isAuthorized
+}
+
+type Subscription {
+  driverResponded: Trip
+
+  matchedRiderState(tripId: ID!): RiderState
+}
+
+type Rider {
+  id: ID!
+  email: String!
+  name: String!
+  password: String!
+  phoneNumber: String!
+}
+
+input PositionInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+type RiderState {
+  tripId: ID!
+  latitude: Float
+  longitude: Float
+  trip: Trip
+}
+
+type DriverResponse{
+  driverId: ID!
+  tripId: ID!
+  response: String!
+}
+
+type CallResult{
+  result: String!
+  trip: Trip
+}
+
+

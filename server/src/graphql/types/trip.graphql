@@ -1,0 +1,88 @@
+type Mutation {
+  openTrip(
+    origin: TripPlaceInput!,
+    destination: TripPlaceInput!,
+    startTime: String!,
+  ) : Trip @isAuthorized
+  cancelTrip(id: ID!): Result @isAuthorized
+  setTripStatus(tripId: ID!, newTripStatus: String!): Result @isAuthorized
+  addChatting(tripId: ID!, chattingInput: ChattingInput!): Chatting @isAuthorized
+  setArrivals(tripId: ID!, arrivalTime: String!, destination: TripPlaceInput): Trip @isAuthorized
+}
+
+type Query {
+  trip(id: ID!):Trip @isAuthorized
+  tripStatus(id: ID!): TripStatus! @isAuthorized
+  chattings(id: ID!): [Chatting] @isAuthorized
+  myTrips(statuses: [String]): [Trip] @isAuthorized
+}
+
+input TripPlaceInput {
+  address: String!
+  latitude: Float!
+  longitude: Float!
+}
+
+type TripStatus{
+  id: ID!
+  status: String!
+}
+
+type Trip {
+  id: ID!
+  rider: MatchedRider!
+  driver: MatchedDriver
+  origin: TripPlace!
+  destination: TripPlace!
+  startTime: String!
+  arrivalTime: String
+  status: String!
+  chattings: [Chatting]
+  estimatedTime: String!
+  estimatedDistance: String!
+}
+
+type Result {
+  result: String
+  trip: Trip
+}
+
+type MatchedRider {
+  id: ID!
+  email: String!
+  name: String!
+}
+
+type MatchedDriver {
+  id: ID!
+  email: String!
+  name: String!
+  carType: String!
+  plateNumber: String!
+  description: String
+  profileImage: String
+}
+
+type TripPlace {
+  address: String!
+  latitude: Float!
+  longitude: Float!
+}
+
+type CancelResult{
+  id: ID!
+  result: String!
+}
+
+type Chatting {
+  id: ID!
+  text: String!
+  time: String!
+  ownerId: String!
+  isOwner: Boolean!
+}
+
+input ChattingInput {
+  text: String!
+  time: String!
+}
