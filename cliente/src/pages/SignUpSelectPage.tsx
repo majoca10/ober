@@ -39,7 +39,7 @@ const Title = styled.h1`
 function SignUpSelectPage() {
   return (
     <Page>
-      <Title>Unirme a Ober</Title>
+      <Title>Unirme a en la RUTA</Title>
       <Link to='/signup/rider'>
         <Button>Registrarme Como Usuario</Button>
       </Link>
