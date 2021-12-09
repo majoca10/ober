@@ -17,6 +17,7 @@ import { ALREADY_MATCHED, MATCHING_SUCCESS, MATCHING_CANCEL } from '../../consta
 import { NOTIFY_DRIVER_RESPONSE } from '../../queries/driverResponded';
 
 import ProgressBar from '../presentational/ProgressBar';
+import {Howl, Howler} from 'howler';
 
 const Modal = styled.div`
   position: absolute;
@@ -84,17 +85,27 @@ const DownArrow = styled.img`
   width: 20px;
 `;
 
+const sound = new Howl({
+  src: ['../sound/1.mp3']
+});
+
+// Change global volume.
+Howler.volume(5);
+
 const COUNT_TIME = 7000;
 
-function DriverPopup({ trip, setDriverStatus }:
+function DriverPopup({ trip, setDriverStatus,  }:
   { trip:{id:string, origin:{address:string}, destination:{address:string}, rider:{id:string}, estimatedTime:string, estimatedDistance:string}, setDriverStatus:any}) {
   const dispatch = useDispatch();
 
   const [notifyDriverResponse] = useMutation(NOTIFY_DRIVER_RESPONSE, { variables: { response: 'confirm', riderId: trip.rider.id, tripId: trip.id } });
 
   const [status, setStatus] = useState('');
+  sound.play();
 
   const showAlert = (result:string) => {
+    // Play the sound.
+    
     setStatus(result);
     setTimeout(() => {
       setDriverStatus(DRIVER_IGNORED);
