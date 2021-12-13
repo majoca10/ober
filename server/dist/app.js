@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
 var express_1 = __importDefault(require("express"));
-var http_1 = __importDefault(require("http"));
+var https_1 = __importDefault(require("https"));
 var apollo_server_express_1 = require("apollo-server-express");
 var mongoose_1 = __importDefault(require("mongoose"));
 var passport_1 = __importDefault(require("passport"));
@@ -51,6 +51,7 @@ var typeDef_1 = __importDefault(require("./graphql/typeDef"));
 var resolvers_1 = __importDefault(require("./graphql/resolvers"));
 var passport_2 = require("./passport");
 var auth_1 = __importDefault(require("./graphql/directives/auth"));
+var fs_1 = __importDefault(require("fs"));
 var options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -72,7 +73,8 @@ var server = new apollo_server_express_1.ApolloServer({
         if (connection) {
             return { data: connection.context, pubsub: pubsub };
         }
-        return graphql_passport_1.buildContext({ req: req, res: res, pubsub: pubsub });
+        console.log(req);
+        return (0, graphql_passport_1.buildContext)({ req: req, res: res, pubsub: pubsub });
     },
     subscriptions: {
         onConnect: function (connectionParams, webSocket, context) { return __awaiter(void 0, void 0, void 0, function () {
@@ -83,7 +85,7 @@ var server = new apollo_server_express_1.ApolloServer({
                         Authorization = connectionParams.Authorization;
                         token = Authorization === null || Authorization === void 0 ? void 0 : Authorization.split('Bearer ')[1];
                         if (!token) return [3 /*break*/, 2];
-                        return [4 /*yield*/, verifyToken_1.default(token)];
+                        return [4 /*yield*/, (0, verifyToken_1.default)(token)];
                     case 1:
                         _a = _b.sent(), data = _a.data, isDriver = _a.isDriver;
                         return [2 /*return*/, { currentUser: { data: data, isDriver: isDriver } }];
@@ -95,10 +97,10 @@ var server = new apollo_server_express_1.ApolloServer({
         },
     }
 });
-var app = express_1.default();
+var app = (0, express_1.default)();
 var path = '/graphql';
-passport_2.localStrategy();
-passport_2.jwtStrategy();
+(0, passport_2.localStrategy)();
+(0, passport_2.jwtStrategy)();
 app.use(path, passport_1.default.initialize());
 app.use(path, function (req, res, next) {
     return passport_1.default.authenticate('jwt', { session: false }, function (error, info) {
@@ -109,9 +111,12 @@ app.use(path, function (req, res, next) {
     })(req, res, next);
 });
 server.applyMiddleware({ app: app, path: path });
-var httpServer = http_1.default.createServer(app);
-server.installSubscriptionHandlers(httpServer);
-httpServer.listen(process.env.PORT, function () {
-    console.log("\uD83D\uDE80 Server ready at http://localhost:" + process.env.PORT + server.graphqlPath);
-    console.log("\uD83D\uDE80 Subscriptions ready at ws://localhost:" + process.env.PORT + server.subscriptionsPath);
+var httpsServer = https_1.default.createServer({
+    key: fs_1.default.readFileSync('private.key'),
+    cert: fs_1.default.readFileSync('api_enlaruta_online.crt'),
+}, app);
+server.installSubscriptionHandlers(httpsServer);
+httpsServer.listen(process.env.PORT, function () {
+    console.log("\uD83D\uDE80 Server ready at https://localhost:".concat(process.env.PORT).concat(server.graphqlPath));
+    console.log("\uD83D\uDE80 Subscriptions ready at wss://localhost:".concat(process.env.PORT).concat(server.subscriptionsPath));
 });

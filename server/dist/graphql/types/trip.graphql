@@ -57,6 +57,7 @@ type MatchedDriver {
   id: ID!
   email: String!
   name: String!
+  identification: String!
   carType: String!
   plateNumber: String!
   description: String

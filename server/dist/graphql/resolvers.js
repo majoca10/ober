@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = __importDefault(require("path"));
 var load_files_1 = require("@graphql-tools/load-files");
 var merge_1 = require("@graphql-tools/merge");
-var resolversArray = load_files_1.loadFilesSync(path_1.default.join(__dirname, './resolvers'));
-exports.default = merge_1.mergeResolvers(resolversArray);
+var resolversArray = (0, load_files_1.loadFilesSync)(path_1.default.join(__dirname, './resolvers'));
+exports.default = (0, merge_1.mergeResolvers)(resolversArray);

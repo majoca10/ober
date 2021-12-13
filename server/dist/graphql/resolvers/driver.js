@@ -151,7 +151,7 @@ exports.default = {
     },
     Subscription: {
         driverListen: {
-            subscribe: apollo_server_express_1.withFilter(function (_, args, context) {
+            subscribe: (0, apollo_server_express_1.withFilter)(function (_, args, context) {
                 return context.pubsub.asyncIterator([subscriptions_1.CALL_REQUESTED]);
             }, function (payload, variables, context) {
                 if (payload.driverListen.driverIds) {
@@ -161,7 +161,7 @@ exports.default = {
             }),
         },
         matchedDriverState: {
-            subscribe: apollo_server_express_1.withFilter(function (_, __, context) {
+            subscribe: (0, apollo_server_express_1.withFilter)(function (_, __, context) {
                 return context.pubsub.asyncIterator([MATCHED_DRIVER_STATE]);
             }, function (payload, variables) {
                 return payload.matchedDriverState.tripId.toString() === variables.tripId.toString();

@@ -9,7 +9,7 @@ export const localStrategy = () => {
     new GraphQLLocalStrategy(async(email, inputPassword, done) => {
       const user = await Driver.findByEmail({ email }) ;
       const passwordCompareResult = user ? await bcrypt.compare(inputPassword, user?.password) : false;
-      const error = passwordCompareResult ? null : new Error('no matching user');
+      const error = passwordCompareResult ? null : new Error('Usuario o contaseña incorrectos');
       done(error, user);
     }),
   );
@@ -18,7 +18,7 @@ export const localStrategy = () => {
     new GraphQLLocalStrategy(async(email, inputPassword, done) => {
       const user = await Rider.findByEmail({ email });
       const passwordCompareResult = user ? await bcrypt.compare(inputPassword, user?.password) : false;
-      const error = passwordCompareResult ? null : new Error('no matching user');
+      const error = passwordCompareResult ? null : new Error('Usuario o contaseña incorrectos');
       done(error, user);
     }),
   );

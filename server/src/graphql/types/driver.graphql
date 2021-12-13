@@ -8,6 +8,7 @@ type Mutation {
   createDriver(
     email: String!,
     name: String!,
+    identification: String!,
     password: String!,
     phoneNumber: String!,
     carType: String!,
@@ -30,6 +31,7 @@ type Mutation {
   updateDriverPosition(
     lat:Float, lng:Float
   ): updateResult @isAuthorized
+
 }
 
 type Subscription {
@@ -42,6 +44,7 @@ type Driver {
   id: ID!
   email: String!
   name: String!
+  identification: String!
   password: String!
   phoneNumber: String!
   carType: String!

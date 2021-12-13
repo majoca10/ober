@@ -9,6 +9,7 @@ type User {
   id: ID!
   email: String!
   name: String!
+  identification: String!
   password: String!
   phoneNumber: String!
   carType: String

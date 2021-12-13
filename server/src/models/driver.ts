@@ -5,6 +5,7 @@ interface driverInterface {
   _id: string;
   email: string;
   name: string;
+  identification: string;
   password: string;
   phoneNumber: string;
   carType: string;
@@ -18,6 +19,7 @@ interface driverInterface {
 const driverSchema = new Schema({
   email: { type: String, unique: true, required: true },
   name: { type: String, required: true },
+  identification: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   phoneNumber: { type: String, unique: true, required: true },
   carType: { type: String, required: true },

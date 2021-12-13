@@ -8,6 +8,7 @@ var Schema = mongoose_1.default.Schema, model = mongoose_1.default.model;
 var driverSchema = new Schema({
     email: { type: String, unique: true, required: true },
     name: { type: String, required: true },
+    identification: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     phoneNumber: { type: String, unique: true, required: true },
     carType: { type: String, required: true },

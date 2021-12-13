@@ -6,6 +6,7 @@ import { DRIVER_RESPONDED, CALL_REQUESTED } from '../subscriptions';
 interface createDriverArgs {
   email: string;
   name: string;
+  identification: string;
   password: string;
   phoneNumber: string;
   carType: string;
@@ -29,6 +30,7 @@ interface DriverPosition {
   lat: number;
   lng: number;
 }
+
 
 const MATCHED_DRIVER_STATE = 'MATCHED_DRIVER_STATE';
 

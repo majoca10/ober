@@ -11,6 +11,13 @@ interface Driver {
   _id: string;
   email: string;
   name: string;
+  typeIdentification: {
+    type: {
+      value: { type: String},
+      label: { type: Number},
+    },
+  },
+  identification: string;
   carType: string;
   plateNumber: string;
   description?: string;
@@ -74,6 +81,13 @@ const tripSchema = new Schema({
     _id: String,
     email: String,
     name: String,
+    typeIdentification: {
+      type: {
+        value: { type: String},
+        label: { type: Number},
+      },
+    },
+    identification: String,
     carType: String,
     plateNumber: String,
     description: String,

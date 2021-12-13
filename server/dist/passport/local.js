@@ -62,7 +62,7 @@ var localStrategy = function () {
                     _b.label = 4;
                 case 4:
                     passwordCompareResult = _a;
-                    error = passwordCompareResult ? null : new Error('no matching user');
+                    error = passwordCompareResult ? null : new Error('Usuario o contaseña incorrectos');
                     done(error, user);
                     return [2 /*return*/];
             }
@@ -85,7 +85,7 @@ var localStrategy = function () {
                     _b.label = 4;
                 case 4:
                     passwordCompareResult = _a;
-                    error = passwordCompareResult ? null : new Error('no matching user');
+                    error = passwordCompareResult ? null : new Error('Usuario o contaseña incorrectos');
                     done(error, user);
                     return [2 /*return*/];
             }

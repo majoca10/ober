@@ -142,14 +142,14 @@ exports.default = {
     },
     Subscription: {
         matchedRiderState: {
-            subscribe: apollo_server_express_1.withFilter(function (_, __, context) {
+            subscribe: (0, apollo_server_express_1.withFilter)(function (_, __, context) {
                 return context.pubsub.asyncIterator([subscriptions_1.MATCHED_RIDER_STATE]);
             }, function (payload, variables) {
                 return payload.matchedRiderState.tripId === variables.tripId;
             }),
         },
         driverResponded: {
-            subscribe: apollo_server_express_1.withFilter(function (parent, args, context) {
+            subscribe: (0, apollo_server_express_1.withFilter)(function (parent, args, context) {
                 return context.pubsub.asyncIterator([subscriptions_1.DRIVER_RESPONDED]);
             }, function (payload, variables, context) {
                 return payload.driverResponded.rider._id.toString() === context.data.currentUser.data._id.toString();

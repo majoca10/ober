@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import http from 'http';
+import https from 'https';
 import { ApolloServer, AuthenticationError, PubSub } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import passport from 'passport';
@@ -11,7 +12,7 @@ import typeDefs from './graphql/typeDef';
 import resolvers from './graphql/resolvers';
 import { localStrategy, jwtStrategy } from './passport';
 import IsAuthorizedDirective from './graphql/directives/auth';
-
+import fs from 'fs';
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -34,6 +35,7 @@ const server = new ApolloServer({
     if (connection) {
       return { data: connection.context, pubsub };
     }
+    console.log(req)
     return buildContext({ req, res, pubsub });
   },
   subscriptions: {
@@ -66,11 +68,13 @@ app.use(path, (req, res, next) =>
   })(req, res, next));
 
 server.applyMiddleware({ app, path });
+const httpsServer = https.createServer({
+  key: fs.readFileSync('private.key'),
+  cert: fs.readFileSync('api_enlaruta_online.crt'),
+}, app);
+server.installSubscriptionHandlers(httpsServer);
 
-const httpServer = http.createServer(app);
-server.installSubscriptionHandlers(httpServer);
-
-httpServer.listen(process.env.PORT, () => {
-  console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
-  console.log(`🚀 Subscriptions ready at ws://localhost:${process.env.PORT}${server.subscriptionsPath}`);
-});
+httpsServer.listen(process.env.PORT, () => {
+  console.log(`🚀 Server ready at https://localhost:${process.env.PORT}${server.graphqlPath}`);
+  console.log(`🚀 Subscriptions ready at wss://localhost:${process.env.PORT}${server.subscriptionsPath}`);
+  });

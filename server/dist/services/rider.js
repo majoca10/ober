@@ -65,7 +65,7 @@ exports.default = {
                     return [4 /*yield*/, context.authenticate('rider-local', payload)];
                 case 1:
                     user = (_b.sent()).user;
-                    token = signToken_1.default({ email: user.email, isDriver: false });
+                    token = (0, signToken_1.default)({ email: user.email, isDriver: false });
                     if (!user) return [3 /*break*/, 3];
                     return [4 /*yield*/, services_1.Trip.getMyTrip(user._id, false, ['open', 'matched', 'onBoard'])];
                 case 2:
